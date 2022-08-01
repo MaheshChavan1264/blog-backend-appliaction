@@ -36,15 +36,29 @@ public class BlogBackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(this.passwordEncoder.encode("abcd1234"));
+//        User user = new User();
+//        user.setName("James H");
+//        user.setAbout("Adding from application");
+//        user.setEmail("james@mail.com");
+//        user.setPassword(this.passwordEncoder.encode("abcd1234"));
+//        Set<Role> roles1 = new HashSet<>();
+//        Role role2 = new Role();
+//        role2.setId(ADMIN_USER);
+//        role2.setName("ROLE_ADMIN");
+//        System.out.println("Role: " + role2.toString());
+//        user.getRoles().add(role2);
+//        System.out.println("User" + user.toString());
+//        System.out.println("User Role" + user.getRoles().toString());
+//        this.userRepository.save(user);
+
         try {
             Role role = new Role();
-            role.setId(NORMAL_USER);
-            role.setName("NORMAL_USER");
+            role.setId(ADMIN_USER);
+            role.setName("ROLE_ADMIN");
 
             Role role1 = new Role();
-            role1.setId(ADMIN_USER);
-            role1.setName("ADMIN_USER");
+            role1.setId(NORMAL_USER);
+            role1.setName("ROLE_NORMAL");
 
             List<Role> roles = new ArrayList<>();
             roles.add(role);

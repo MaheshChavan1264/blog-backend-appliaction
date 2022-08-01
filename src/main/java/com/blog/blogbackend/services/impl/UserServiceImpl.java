@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.blog.blogbackend.config.AppConstants.ADMIN_USER;
 import static com.blog.blogbackend.config.AppConstants.NORMAL_USER;
 
 @Service
@@ -37,10 +38,8 @@ public class UserServiceImpl implements UserService {
         User user = this.dtoToUser(userDto);
         //encoded the password
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-
         //roles
-        Role role = this.roleRepository.findById(NORMAL_USER).get();
-
+        Role role = this.roleRepository.findById(ADMIN_USER).get();
         user.getRoles().add(role);
         User newUser = this.userRepository.save(user);
         return this.userToDto(newUser);
@@ -49,9 +48,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = this.dtoToUser(userDto);
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+        Role role = this.roleRepository.findById(NORMAL_USER).get();
+        user.getRoles().add(role);
         User savedUser = this.userRepository.save(user);
         return this.userToDto(savedUser);
-
     }
 
     @Override
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " Id: ", userId));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
         user.setAbout(userDto.getAbout());
         this.userRepository.save(user);
         return this.userToDto(user);
